@@ -9,8 +9,8 @@ import { Provider } from 'react-redux';
 import { io } from 'socket.io-client';
 import App from './App.jsx';
 import './index.css';
-import * as socket from './socket';
 import store from './store/configStore';
+import * as socket from './utils/socket';
 
 export const theme = extendTheme(
   {
