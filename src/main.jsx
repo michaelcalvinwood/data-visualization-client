@@ -24,7 +24,11 @@ export const theme = extendTheme(
   proTheme
 );
 
-socket.setupTheSocket(io, `https://dv-sql.pymnts.com:443`, store);
+const server = `https://${
+  import.meta.env.MODE === 'development' ? 'localhost' : 'dv-sql.pymnts.com'
+}:443`;
+
+socket.setupTheSocket(io, server, store);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
