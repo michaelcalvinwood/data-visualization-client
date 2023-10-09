@@ -1,34 +1,39 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-
-
-import { ChakraProvider } from '@chakra-ui/react';
-import { theme as proTheme } from '@chakra-ui/pro-theme'
-import { extendTheme, theme as baseTheme, ColorModeScript } from '@chakra-ui/react'
-
-import store from './store/configStore';
-
-import { io } from 'socket.io-client';
-import * as socket from './socket';
+import { theme as proTheme } from '@chakra-ui/pro-theme';
+import {
+  ChakraProvider,
+  theme as baseTheme,
+  extendTheme
+} from '@chakra-ui/react';
+import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
+import { io } from 'socket.io-client';
+import App from './App.jsx';
+import './index.css';
+import store from './store/configStore';
+import * as socket from './utils/socket';
 
 export const theme = extendTheme(
   {
-    colors: { ...baseTheme.colors, brand: baseTheme.colors.messenger },
+    colors: {
+      ...baseTheme.colors,
+      brand: baseTheme.colors.messenger
+    },
     initialColorMode: 'light',
-    useSystemColorMode: false,
+    useSystemColorMode: false
   },
   proTheme
-)
+);
 
-socket.setupTheSocket(io, `https://dv-sql.pymnts.com:443`, store);
+const server = `https://${
+  import.meta.env.MODE === 'development' ? 'localhost' : 'dv-sql.pymnts.com'
+}:443`;
+
+socket.setupTheSocket(io, server, store);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <ChakraProvider theme={theme}>
       <App />
     </ChakraProvider>
-  </Provider>,
-)
+  </Provider>
+);
